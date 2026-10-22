@@ -47,7 +47,7 @@ The application adheres strictly to the **Model-View-Controller (MVC)** software
 ```text
        +-------------------------------------------------------+
        |                     CONTROLLER                        |
-       |  (Python Dash Callbacks in ProjectTwoDashboard.ipynb) |
+       |  (Python Dash Callbacks in telemetry-dashboard.ipynb) |
        +-------------------------------------------------------+
               ^                                  |
    Triggers & | Events              Updates Data | & Components
@@ -62,8 +62,8 @@ The application adheres strictly to the **Model-View-Controller (MVC)** software
 ```
 
 * **Model (`CRUD_Python_Module.py` & MongoDB)**: Encapsulates database connection handling, user authentication, and atomic CRUD operations (`create`, `read`, `update`, `delete`).
-* **View (`ProjectTwoDashboard.ipynb` - Layout)**: Built with `dash_table`, `dash_core_components`, `dash_html_components`, and `dash_leaflet` to render UI widgets, branding, and maps.
-* **Controller (`ProjectTwoDashboard.ipynb` - Callbacks)**: Reactive `@app.callback` decorators listen for user input (radio selections, table pagination, row selection), execute data transformations, and refresh views without page reloads.
+* **View (`telemetry-dashboard.ipynb` - Layout)**: Built with `dash_table`, `dash_core_components`, `dash_html_components`, and `dash_leaflet` to render UI widgets, branding, and maps.
+* **Controller (`telemetry-dashboard.ipynb` - Callbacks)**: Reactive `@app.callback` decorators listen for user input (radio selections, table pagination, row selection), execute data transformations, and refresh views without page reloads.
 
 ---
 
@@ -110,7 +110,7 @@ my-repository/
 │   ├── screenshot_3_mountain_rescue.png  # Test verification: Mountain Rescue filter state
 │   └── screenshot_4_disaster_rescue.png  # Test verification: Disaster Rescue filter state
 ├── CRUD_Python_Module.py                 # Model: Python class handling authenticated MongoDB CRUD routines
-├── ProjectTwoDashboard.ipynb             # View/Controller: JupyterDash notebook housing layout & callbacks
+├── telemetry-dashboard.ipynb             # View/Controller: JupyterDash notebook housing layout & callbacks
 └── README.md                             # Technical project documentation
 ```
 
@@ -154,7 +154,7 @@ db.createUser({
    cd grazioso-salvare-dashboard
    ```
 2. Verify that `CRUD_Python_Module.py` and `Grazioso Salvare Logo.png` reside in the working directory.
-3. Open `ProjectTwoDashboard.ipynb` in JupyterLab.
+3. Open `telemetry-dashboard.ipynb` in JupyterLab.
 4. Run all cells sequentially.
 5. Access the live dashboard in your web browser:
    * Local: `http://localhost:8050/`
@@ -199,7 +199,7 @@ db.createUser({
 
 ## Engineering Reflection & Systems Design Rationale
 ### 1. Maintainability, Readability, and Adaptability
-Writing modular, maintainable software requires strict separation of concerns. In this architecture, database interaction logic is encapsulated entirely within the `AnimalShelter` class (`CRUD_Python_Module.py`), leaving the view and controller layers in `ProjectTwoDashboard.ipynb` agnostic of underlying database driver implementations.
+Writing modular, maintainable software requires strict separation of concerns. In this architecture, database interaction logic is encapsulated entirely within the `AnimalShelter` class (`CRUD_Python_Module.py`), leaving the view and controller layers in `telemetry-dashboard.ipynb` agnostic of underlying database driver implementations.
 
 * **Advantages of the CRUD Module Abstraction:** Decoupling the data layer ensured that authentication routines, schema sanitization, and PyMongo driver invocations remained isolated. When UI components require data, they interact trhoguh uniform `create()`, `read()`, `update()`, and `delete()` contracts. This prevented database connection leaks, eliminated redundant query code across reactive callbacks, and ensured that changes to database connection parameteres (e.g., configuring `authSource=admin`) required editing only a single class method rather than multiple UI callbacks
 * **Future Adaptability & Reuse:** The `AnimalShelter` CRUD module is architected as an independent data-access layer. It can be integrated into headless RESTful APIs (e.g., FastAPI or Flask microservices), automated ETL batch pipelines that ingest daily animal intake logs, or edge-deployed mobile backend services without modifying the core query algorithms.
